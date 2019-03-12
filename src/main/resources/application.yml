@@ -1,0 +1,38 @@
+# mapping endpoints to a different path. /actuator/health to /status
+management.endpoints.web.base-path: /
+management.endpoints.web.path-mapping.health: status
+spring.main.allow-bean-definition-overriding: true
+---
+#development
+
+spring:
+  profiles: 
+    active: development
+
+server.port: 9041
+
+logging.level:
+    root: info
+    bloomfilter: debug
+    
+amp.filter:
+    bit.count: 100000
+    fpp: 0.01
+   
+---
+#production
+
+spring:
+  profiles: production
+
+server.port: 9041
+
+logging.level:
+    root: info
+    bloomfilter: info
+    
+amp.filter:
+    bit.count: 1000000000
+    fpp: 0.03
+   
+---
