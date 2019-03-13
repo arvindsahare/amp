@@ -45,6 +45,15 @@ public class DeviceFilterController {
     return "Greetings from Device Filter Controller!";
   }
 
+  /**
+   * Creates bloom filter based on configured values
+   *    - amp.filter.bit.count (Bit array to be allocated)
+   *    - amp.filter.bit.fpp (False positive percentage)
+   *    - amp.filter.bit.factor (Load factor if needs to be added)
+   *    - String Funnel
+   * @param deviceIds: List of existing device Id(String format) which needs to be added to filter
+   * @return deviceIds size which was fetched for filter creation. 
+   */
   @PostMapping("/bloom/filter/create")
   public @ResponseBody ResponseEntity<Long> createStringBloomFilter(
       @RequestBody List<String> deviceIds) {
@@ -58,6 +67,15 @@ public class DeviceFilterController {
     return new ResponseEntity<>(addedDeviceCount, HttpStatus.OK);
   }
 
+  /**
+   * Creates bloom filter based on configured values and passed Device UUIDs
+   *    - amp.filter.bit.count (Bit array to be allocated)
+   *    - amp.filter.bit.fpp (False positive percentage)
+   *    - amp.filter.bit.factor (Load factor if needs to be added)
+   *    - String Funnel
+   * @param deviceIds: List of existing device Id(UUID format) which needs to be added to filter
+   * @return deviceIds size which was fetched for filter creation. 
+   */
   @PostMapping("/bloom/filter/uuid/create")
   public @ResponseBody ResponseEntity<Long> createUUIDBloomFilter(@RequestBody List<UUID> deviceIds) {
     log.info("########################## Create Bloom Filter ##########################");
@@ -70,6 +88,12 @@ public class DeviceFilterController {
     return new ResponseEntity<>(addedDeviceCount, HttpStatus.OK);
   }
 
+  /**
+   * Adds list of device Id(String format) to existing filter
+   * 
+   * @param deviceIds: List of new device Id(String format) which needs to be added to filter
+   * @return deviceIds size which was fetched for filter creation. 
+   */
   @PatchMapping("/bloom/filter/batch/add")
   public @ResponseBody ResponseEntity<Long> addNewDevicesToBloomFilter(
       @RequestBody List<String> deviceIds) {
@@ -85,6 +109,12 @@ public class DeviceFilterController {
     return new ResponseEntity<>(addedDeviceCount, HttpStatus.OK);
   }
 
+  /**
+   * Adds list of device Id(UUID format) to existing filter
+   * 
+   * @param deviceIds: List of new device Id(UUID format) which needs to be added to filter
+   * @return deviceIds size which was fetched for filter creation. 
+   */
   @PatchMapping("/bloom/filter/uuid/batch/add")
   public @ResponseBody ResponseEntity<Long> addNewDeviceUUIDsToBloomFilter(
       @RequestBody List<UUID> deviceIds) {
@@ -100,6 +130,12 @@ public class DeviceFilterController {
     return new ResponseEntity<>(addedDeviceCount, HttpStatus.OK);
   }
 
+  /**
+   * Adds single device Id(String format) to existing filter
+   * 
+   * @param deviceId: New device Id(String format) which needs to be added to filter
+   * @return Count of deviceIds added to filter. 
+   */
   @PatchMapping("/bloom/filter/add")
   public static @ResponseBody ResponseEntity<Long> addNewDeviceToBloomFilter(@RequestParam(name = "deviceId") String deviceId) {
     log.info(
@@ -112,6 +148,12 @@ public class DeviceFilterController {
     return new ResponseEntity<>(addedDeviceCount, HttpStatus.OK);
   }
 
+  /**
+   * Adds single device Id(UUID format) to existing filter
+   * 
+   * @param deviceId: New device Id(UUID format) which needs to be added to filter
+   * @return Count of deviceIds added to filter. 
+   */
   @PatchMapping("/bloom/filter/uuid/add")
   public static @ResponseBody ResponseEntity<Long> addNewDeviceUUIDToBloomFilter(@RequestParam(name = "deviceId") UUID deviceId) {
     log.info(
@@ -124,6 +166,11 @@ public class DeviceFilterController {
     return new ResponseEntity<>(addedDeviceCount, HttpStatus.OK);
   }
 
+  /**
+   * Validates if passed in device ID is registered device or not.
+   * @param deviceId: Device Id which needs to be validated
+   * @return Boolean
+   */
   @GetMapping("/bloom/filter/validate")
   public static @ResponseBody ResponseEntity<Boolean> isDevicePresentInFilter(@RequestParam(name = "deviceId") String deviceId) {
     boolean isDevicePresent = false;
@@ -133,6 +180,10 @@ public class DeviceFilterController {
     return new ResponseEntity<>(isDevicePresent, HttpStatus.OK);
   }
 
+  /**
+   * Distinct elements which are added to the filter
+   * @return Long
+   */
   @GetMapping("/bloom/filter/deviceCount")
   public static @ResponseBody ResponseEntity<Long> distinctElementCount() {
     long distinctElementCount = 0;
@@ -142,6 +193,10 @@ public class DeviceFilterController {
     return new ResponseEntity<>(distinctElementCount, HttpStatus.OK);
   }
 
+  /**
+   * Date on which filter was configured from start
+   * @return Date
+   */
   @GetMapping("/bloom/filter/date")
   public static @ResponseBody ResponseEntity<Date> filterConfigureDate() {
     if (isFilterConfigured) {
@@ -153,6 +208,10 @@ public class DeviceFilterController {
     return new ResponseEntity<>(c.getTime(), HttpStatus.OK);
   }
   
+  /**
+   * Method to check if any new device id was added to filter after creation
+   * @return Boolean
+   */
   @GetMapping("/bloom/filter/isUpdated")
   public static @ResponseBody ResponseEntity<Boolean> isFilterUpdated() {
     if (isFilterConfigured && filterLastlyUpdateDate != null) {
@@ -161,7 +220,11 @@ public class DeviceFilterController {
     return new ResponseEntity<>(false, HttpStatus.OK);
   }
 
-  @GetMapping("/bloom/filter/ffp")
+  /**
+   * Expected false positive percentage based on configuration parameters
+   * @return Double
+   */
+  @GetMapping("/bloom/filter/fpp")
   public static @ResponseBody ResponseEntity<Double> expectedFpp() {
     double expectedFpp = 0;
     if (isFilterConfigured) {
