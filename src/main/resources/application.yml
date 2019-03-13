@@ -16,8 +16,11 @@ logging.level:
     bloomfilter: debug
     
 amp.filter:
-    bit.count: 100000
+    bit:
+       count: 100000
+       load.factor: 10
     fpp: 0.01
+    
    
 ---
 #production
@@ -32,7 +35,9 @@ logging.level:
     bloomfilter: info
     
 amp.filter:
-    bit.count: 1000000000
+    bit:
+       count: 1000000000
+       load.factor: 10
     fpp: 0.03
    
 ---
