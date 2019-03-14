@@ -1,11 +1,13 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>amp</groupId>
-  <artifactId>filter</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>DeviceFilter</name>
-  <description>Filtering APIs for device filtering using probabilistic bloom filter</description>
-  <parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>amp</groupId>
+	<artifactId>filter</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>DeviceFilter</name>
+	<packaging>war</packaging>
+	<description>Filtering APIs for device filtering using probabilistic bloom filter</description>
+	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.2.RELEASE</version>
@@ -33,6 +35,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
