@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,9 +72,11 @@ public class DeviceFilterController {
     try {
       Files.list(Paths.get(folderName))
       .forEach(filePath -> {
+        AtomicInteger counter = new AtomicInteger(0);
         log.info("Processing file names:{}", filePath);
         try (Stream<String> stream = Files.lines(Paths.get(filePath.toUri()))) {
         stream.forEach(deviceId -> {
+          counter.getAndIncrement();
           String deviceString = StringUtils.remove(deviceId, '"');
           if (StringUtils.isNotBlank(deviceString) ) {
             bloomFilter.put(deviceString);
@@ -84,7 +87,7 @@ public class DeviceFilterController {
       } catch (Exception e) {
         log.error("General Exception occurred while iterating over lines in a file");
       }
-        log.info("Processed device count:{}", bloomFilter.approximateElementCount());
+        log.info("Processed device count:"+counter.doubleValue() );
         }
       );
     } catch (IOException e) {
