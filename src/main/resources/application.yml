@@ -6,8 +6,7 @@ spring.main.allow-bean-definition-overriding: true
 #development
 
 spring:
-  profiles: 
-    active: development
+  profiles: development
 
 server.port: 9041
 
@@ -36,7 +35,7 @@ logging.level:
     
 amp.filter:
     bit:
-       count: 1000000000
+       count: 10000000000
        load.factor: 10
     fpp: 0.03
    

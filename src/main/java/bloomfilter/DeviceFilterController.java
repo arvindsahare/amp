@@ -64,7 +64,7 @@ public class DeviceFilterController {
    * @return deviceIds size which was fetched for filter creation.
    */
   @PostMapping("/file/create")
-  public @ResponseBody ResponseEntity<Long> createBloomFilterFromFiles(
+  public @ResponseBody ResponseEntity<Double> createBloomFilterFromFiles(
       @RequestParam String folderName) {
     log.info("########################## Create Bloom Filter ##########################");
     bloomFilter = BloomFilter.create(Funnels.stringFunnel(Charset.defaultCharset()),
@@ -109,7 +109,7 @@ public class DeviceFilterController {
    * @return deviceIds size which was fetched for filter creation.
    */
   @PostMapping("/create")
-  public @ResponseBody ResponseEntity<Long> createStringBloomFilter(
+  public @ResponseBody ResponseEntity<Double> createStringBloomFilter(
       @RequestBody List<String> deviceIds) {
     log.info("########################## Create Bloom Filter ##########################");
     bloomFilter = BloomFilter.create(Funnels.stringFunnel(Charset.defaultCharset()),
@@ -129,7 +129,7 @@ public class DeviceFilterController {
    * @return deviceIds size which was fetched for filter creation.
    */
   @PostMapping("/uuid/create")
-  public @ResponseBody ResponseEntity<Long> createUUIDBloomFilter(
+  public @ResponseBody ResponseEntity<Double> createUUIDBloomFilter(
       @RequestBody List<UUID> deviceIds) {
     log.info("########################## Create Bloom Filter ##########################");
     bloomFilter = BloomFilter.create(Funnels.stringFunnel(Charset.defaultCharset()),
@@ -147,7 +147,7 @@ public class DeviceFilterController {
    * @return deviceIds size which was fetched for filter creation.
    */
   @PatchMapping("/batch/add")
-  public @ResponseBody ResponseEntity<Long> addNewDevicesToBloomFilter(
+  public @ResponseBody ResponseEntity<Double> addNewDevicesToBloomFilter(
       @RequestBody List<String> deviceIds) {
     log.info(
         "########################## Update new devices To Bloom Filter ##########################");
@@ -167,7 +167,7 @@ public class DeviceFilterController {
    * @return deviceIds size which was fetched for filter creation.
    */
   @PatchMapping("/uuid/batch/add")
-  public @ResponseBody ResponseEntity<Long> addNewDeviceUUIDsToBloomFilter(
+  public @ResponseBody ResponseEntity<Double> addNewDeviceUUIDsToBloomFilter(
       @RequestBody List<UUID> deviceIds) {
     log.info(
         "########################## Update new devices UUID To Bloom Filter ##########################");
@@ -187,7 +187,7 @@ public class DeviceFilterController {
    * @return Count of deviceIds added to filter.
    */
   @PatchMapping("/add")
-  public static @ResponseBody ResponseEntity<Long> addNewDeviceToBloomFilter(
+  public static @ResponseBody ResponseEntity<Double> addNewDeviceToBloomFilter(
       @RequestParam(name = "deviceId") String deviceId) {
     log.info(
         "########################## Update new devices To Bloom Filter ##########################");
@@ -205,7 +205,7 @@ public class DeviceFilterController {
    * @return Count of deviceIds added to filter.
    */
   @PatchMapping("/uuid/add")
-  public static @ResponseBody ResponseEntity<Long> addNewDeviceUUIDToBloomFilter(
+  public static @ResponseBody ResponseEntity<Double> addNewDeviceUUIDToBloomFilter(
       @RequestParam(name = "deviceId") UUID deviceId) {
     log.info(
         "########################## Update new devices UUID To Bloom Filter ##########################");
@@ -232,8 +232,8 @@ public class DeviceFilterController {
     return new ResponseEntity<>(isDevicePresent, HttpStatus.OK);
   }
 
-  private static long getDistinctElementCount() {
-    long distinctElementCount = 0;
+  private static double getDistinctElementCount() {
+    double distinctElementCount = 0;
     if (isFilterConfigured) {
       distinctElementCount = bloomFilter.approximateElementCount();
     }
@@ -246,7 +246,7 @@ public class DeviceFilterController {
    * @return Long
    */
   @GetMapping("/deviceCount")
-  public static @ResponseBody ResponseEntity<Long> distinctElementCount() {
+  public static @ResponseBody ResponseEntity<Double> distinctElementCount() {
     return new ResponseEntity<>(getDistinctElementCount(), HttpStatus.OK);
   }
 
@@ -293,6 +293,5 @@ public class DeviceFilterController {
     }
     return new ResponseEntity<>(expectedFpp, HttpStatus.OK);
   }
-
 
 }
