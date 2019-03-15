@@ -70,7 +70,9 @@ public class DeviceFilterController {
         filterBitCount * filterBitLoadFactor, falsePositive);
     try {
       Files.list(Paths.get(folderName))
-      .forEach(filePath -> {try (Stream<String> stream = Files.lines(Paths.get(filePath.toUri()))) {
+      .forEach(filePath -> {
+        log.info("Processing file names:{}", filePath);
+        try (Stream<String> stream = Files.lines(Paths.get(filePath.toUri()))) {
         stream.forEach(deviceId -> {
           String deviceString = StringUtils.remove(deviceId, '"');
           if (StringUtils.isNotBlank(deviceString) ) {
@@ -81,7 +83,10 @@ public class DeviceFilterController {
         log.error("IOException occurred while iterating over lines in a file");
       } catch (Exception e) {
         log.error("General Exception occurred while iterating over lines in a file");
-      }});
+      }
+        log.info("Processed device count:{}", bloomFilter.approximateElementCount());
+        }
+      );
     } catch (IOException e) {
       log.error("Exception occurred while iterating over multiple files");
     }
